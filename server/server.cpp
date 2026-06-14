@@ -52,7 +52,7 @@ void handleClient(int clientSocket) {
         send(clientSocket, response.c_str(), response.length(), 0);
 
         // Guardar el archivo localmente en el servidor
-        ofstream outfile(filename, ios::binary);
+        ofstream outfile("recibido_" + filename, ios::binary);
         if (!outfile) {
             cerr << "[ERROR] No se pudo crear el archivo " << filename << endl;
             close(clientSocket);
@@ -104,9 +104,17 @@ void handleClient(int clientSocket) {
             // Enviar los datos del archivo
             char dataBuffer[BUFFER_SIZE];
             size_t totalSent = 0;
+
             while (totalSent < filesize) {
                 infile.read(dataBuffer, BUFFER_SIZE);
                 size_t bytesReadFromFile = infile.gcount();
+
+                if (bytesReadFromFile == 0) {
+                    cerr << "[ERROR] Fin de archivo inesperado o archivo corrupto." << endl;
+                    break; // Esto rompe el bucle infinito
+                }
+
+
                 if (!sendAll(clientSocket, dataBuffer, bytesReadFromFile)) {
                     cerr << "[ERROR] Se cortó la conexión enviando el archivo." << endl;
                     break;
