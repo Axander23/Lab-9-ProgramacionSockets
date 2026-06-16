@@ -26,7 +26,7 @@ Este repositorio contiene la implementación del proyecto de la asignatura sobre
    ./client 127.0.0.1
    ```
 
-## Protocolo de Comunicación (Para el Compañero)
+## Protocolo de Comunicación 
 
 El servidor y cliente deben comunicarse en texto plano para los comandos, seguido del flujo binario de los archivos.
 
